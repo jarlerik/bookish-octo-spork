@@ -7,6 +7,7 @@ exports.transpile = () => ({
     filename: "[name].js",
     chunkFilename: "[chunkhash].js",
   },
+  entry: path.resolve(__dirname, "../src/index.ts"),
   module: {
     rules: [
       {

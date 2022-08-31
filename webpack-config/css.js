@@ -1,17 +1,28 @@
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const tailwind = () => ({
+  loader: "postcss-loader",
+  options: {
+    postcssOptions: { plugins: [require("tailwindcss")()] },
+  },
+});
 exports.styles = () => ({
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          // Creates `style` nodes from JS strings
-          "style-loader",
-          // Translates CSS into CommonJS
+          MiniCssExtractPlugin.loader,
           "css-loader",
-          // Compiles Sass to CSS
           "sass-loader",
+          tailwind(),
         ],
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "styles/[name].css",
+    }),
+  ],
 });

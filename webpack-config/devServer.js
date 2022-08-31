@@ -1,6 +1,8 @@
 const { WebpackPluginServe } = require("webpack-plugin-serve");
 const path = require("node:path");
 exports.serve = () => ({
+  devtool: "eval-cheap-module-source-map",
+  entry: ["webpack-plugin-serve/client", "./src/index.ts"],
   watch: true,
   plugins: [
     new WebpackPluginServe({

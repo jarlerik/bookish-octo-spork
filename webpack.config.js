@@ -6,31 +6,26 @@ const html = require("./webpack-config/html");
 const babel = require("./webpack-config/babel");
 const css = require("./webpack-config/css");
 
-const commonConfig = merge([
-  { entry: [path.join(__dirname, "./src")] },
-  html.page({ title: "Webpak" }),
-  css.styles(),
-]);
+const commonConfig = (mode) =>
+  merge([
+    { entry: [path.join(__dirname, "./src/index.ts")] },
+    css.styles(mode),
+    babel.transpile(),
+    html.page({ title: "Webpak" }),
+  ]);
 
 const productionConfig = merge([]);
 
-const developmentConfig = merge([
-  { devtool: "eval-cheap-module-source-map" },
-  {
-    entry: ["webpack-plugin-serve/client"],
-  },
-  devServer.serve(),
-  babel.transpile(),
-]);
+const developmentConfig = merge([devServer.serve()]);
 
 const getConfig = (mode) => {
   process.env.NODE_ENV = mode;
 
   switch (mode) {
     case "production":
-      return merge(commonConfig, productionConfig, { mode });
+      return merge(commonConfig(mode), productionConfig, { mode });
     case "development":
-      return merge(commonConfig, developmentConfig, { mode });
+      return merge(commonConfig(mode), developmentConfig, { mode });
     default:
       throw new Error(`Trying to use an unknown mode, ${mode}`);
   }
